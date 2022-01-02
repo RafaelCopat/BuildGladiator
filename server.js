@@ -5,11 +5,13 @@ const http         = require('http')
 const port         = process.env.PORT || 9090;
 const app          = express()
 
-app.use(express.static('static'))
+app.set('appPath', 'public');
+app.use(express.static(__dirname));
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'))
-} )
+app.route('/*')
+  .get(function(req, res) {
+    res.sendfile(app.get(__dirname, 'index.html'));
+  });
 
 app.set('port', port)
 const server = http.createServer(app)
